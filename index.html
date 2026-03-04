@@ -3,205 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfiles Profesionales</title>
+<title>Mediación Cultural</title>
 
 <style>
-    body {
+    * {
         margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
         font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(135deg, #1f1c2c, #928dab);
+        height: 100vh;
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                    url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f") center/cover no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
         color: white;
     }
 
-    header {
-        text-align: center;
+    .banner {
+        max-width: 800px;
         padding: 40px;
+        animation: fadeIn 1.5s ease-in-out;
     }
 
-    header h1 {
+    h1 {
         font-size: 3rem;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
     }
 
-    .filter-container {
-        text-align: center;
-        margin-bottom: 30px;
+    p {
+        font-size: 1.3rem;
+        margin-bottom: 40px;
+        line-height: 1.6;
     }
 
-    select {
-        padding: 10px;
-        border-radius: 10px;
+    .btn {
+        padding: 15px 40px;
+        font-size: 1.1rem;
         border: none;
-        font-size: 1rem;
-    }
-
-    .container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-        padding: 40px;
-    }
-
-    .card {
-        background: rgba(255,255,255,0.1);
-        border-radius: 20px;
-        padding: 20px;
-        text-align: center;
-        backdrop-filter: blur(10px);
-        transition: transform 0.4s, box-shadow 0.4s;
+        border-radius: 50px;
+        background: #00c6ff;
+        background: linear-gradient(45deg, #0072ff, #00c6ff);
+        color: white;
         cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+        display: inline-block;
     }
 
-    .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0px 10px 25px rgba(0,0,0,0.5);
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
 
-    .card img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 4px solid white;
-        margin-bottom: 15px;
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
     }
 
-    .card h2 {
-        margin: 10px 0 5px;
-    }
-
-    .card p {
-        font-size: 0.9rem;
-        opacity: 0.9;
-    }
-
-    /* Modal */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.7);
-        justify-content: center;
-        align-items: center;
-    }
-
-    .modal-content {
-        background: white;
-        color: black;
-        padding: 30px;
-        border-radius: 15px;
-        width: 90%;
-        max-width: 400px;
-        text-align: center;
-    }
-
-    .close {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        color: red;
+    @media (max-width: 768px) {
+        h1 { font-size: 2rem; }
+        p { font-size: 1rem; }
     }
 </style>
 </head>
+
 <body>
 
-<header>
-    <h1>Perfiles Profesionales</h1>
-    <p>Conoce nuestro equipo de expertos</p>
-</header>
-
-<div class="filter-container">
-    <select id="filter" onchange="filtrarPerfiles()">
-        <option value="todos">Todos</option>
-        <option value="tecnologia">Tecnología</option>
-        <option value="educacion">Educación</option>
-        <option value="salud">Salud</option>
-    </select>
+<div class="banner">
+    <h1>Mediación Cultural</h1>
+    <p>
+        Mi proyecto es un servicio de Mediación Cultural.  
+        No es una red social para perder el tiempo,  
+        es un sistema donde el valor es el conocimiento compartido.
+    </p>
+    <a href="perfiles.html" class="btn">Ingresar</a>
 </div>
-
-<div class="container" id="profileContainer"></div>
-
-<!-- Modal -->
-<div class="modal" id="modal">
-    <div class="modal-content">
-        <span class="close" onclick="cerrarModal()">&times;</span>
-        <h2 id="modalNombre"></h2>
-        <p id="modalInfo"></p>
-    </div>
-</div>
-
-<script>
-const perfiles = [
-    {
-        nombre: "Laura Martínez",
-        ocupacion: "Ingeniera de Software",
-        categoria: "tecnologia",
-        descripcion: "Especialista en desarrollo web, IA y arquitectura backend.",
-        imagen: "https://randomuser.me/api/portraits/women/44.jpg"
-    },
-    {
-        nombre: "Carlos Gómez",
-        ocupacion: "Docente de Matemáticas",
-        categoria: "educacion",
-        descripcion: "Experto en metodologías activas y enseñanza STEM.",
-        imagen: "https://randomuser.me/api/portraits/men/32.jpg"
-    },
-    {
-        nombre: "Ana Rodríguez",
-        ocupacion: "Médica General",
-        categoria: "salud",
-        descripcion: "Profesional con experiencia en atención primaria y prevención.",
-        imagen: "https://randomuser.me/api/portraits/women/68.jpg"
-    },
-    {
-        nombre: "Daniel Torres",
-        ocupacion: "Desarrollador Frontend",
-        categoria: "tecnologia",
-        descripcion: "Especialista en React, UX/UI y aplicaciones interactivas.",
-        imagen: "https://randomuser.me/api/portraits/men/75.jpg"
-    }
-];
-
-function mostrarPerfiles(lista) {
-    const container = document.getElementById("profileContainer");
-    container.innerHTML = "";
-
-    lista.forEach(perfil => {
-        container.innerHTML += `
-            <div class="card" onclick="abrirModal('${perfil.nombre}', '${perfil.descripcion}')">
-                <img src="${perfil.imagen}" alt="${perfil.nombre}">
-                <h2>${perfil.nombre}</h2>
-                <p>${perfil.ocupacion}</p>
-            </div>
-        `;
-    });
-}
-
-function filtrarPerfiles() {
-    const filtro = document.getElementById("filter").value;
-    if (filtro === "todos") {
-        mostrarPerfiles(perfiles);
-    } else {
-        const filtrados = perfiles.filter(p => p.categoria === filtro);
-        mostrarPerfiles(filtrados);
-    }
-}
-
-function abrirModal(nombre, descripcion) {
-    document.getElementById("modalNombre").innerText = nombre;
-    document.getElementById("modalInfo").innerText = descripcion;
-    document.getElementById("modal").style.display = "flex";
-}
-
-function cerrarModal() {
-    document.getElementById("modal").style.display = "none";
-}
-
-mostrarPerfiles(perfiles);
-</script>
 
 </body>
 </html>
