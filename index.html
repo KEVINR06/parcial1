@@ -1,1 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfiles Profesionales</title>
 
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #1f1c2c, #928dab);
+        color: white;
+    }
+
+    header {
+        text-align: center;
+        padding: 40px;
+    }
+
+    header h1 {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+
+    .filter-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    select {
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        font-size: 1rem;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        padding: 40px;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.1);
+        border-radius: 20px;
+        padding: 20px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        transition: transform 0.4s, box-shadow 0.4s;
+        cursor: pointer;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .card img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        margin-bottom: 15px;
+    }
+
+    .card h2 {
+        margin: 10px 0 5px;
+    }
+
+    .card p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    /* Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: white;
+        color: black;
+        padding: 30px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .close {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        color: red;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Perfiles Profesionales</h1>
+    <p>Conoce nuestro equipo de expertos</p>
+</header>
+
+<div class="filter-container">
+    <select id="filter" onchange="filtrarPerfiles()">
+        <option value="todos">Todos</option>
+        <option value="tecnologia">Tecnología</option>
+        <option value="educacion">Educación</option>
+        <option value="salud">Salud</option>
+    </select>
+</div>
+
+<div class="container" id="profileContainer"></div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <h2 id="modalNombre"></h2>
+        <p id="modalInfo"></p>
+    </div>
+</div>
+
+<script>
+const perfiles = [
+    {
+        nombre: "Laura Martínez",
+        ocupacion: "Ingeniera de Software",
+        categoria: "tecnologia",
+        descripcion: "Especialista en desarrollo web, IA y arquitectura backend.",
+        imagen: "https://randomuser.me/api/portraits/women/44.jpg"
+    },
+    {
+        nombre: "Carlos Gómez",
+        ocupacion: "Docente de Matemáticas",
+        categoria: "educacion",
+        descripcion: "Experto en metodologías activas y enseñanza STEM.",
+        imagen: "https://randomuser.me/api/portraits/men/32.jpg"
+    },
+    {
+        nombre: "Ana Rodríguez",
+        ocupacion: "Médica General",
+        categoria: "salud",
+        descripcion: "Profesional con experiencia en atención primaria y prevención.",
+        imagen: "https://randomuser.me/api/portraits/women/68.jpg"
+    },
+    {
+        nombre: "Daniel Torres",
+        ocupacion: "Desarrollador Frontend",
+        categoria: "tecnologia",
+        descripcion: "Especialista en React, UX/UI y aplicaciones interactivas.",
+        imagen: "https://randomuser.me/api/portraits/men/75.jpg"
+    }
+];
+
+function mostrarPerfiles(lista) {
+    const container = document.getElementById("profileContainer");
+    container.innerHTML = "";
+
+    lista.forEach(perfil => {
+        container.innerHTML += `
+            <div class="card" onclick="abrirModal('${perfil.nombre}', '${perfil.descripcion}')">
+                <img src="${perfil.imagen}" alt="${perfil.nombre}">
+                <h2>${perfil.nombre}</h2>
+                <p>${perfil.ocupacion}</p>
+            </div>
+        `;
+    });
+}
+
+function filtrarPerfiles() {
+    const filtro = document.getElementById("filter").value;
+    if (filtro === "todos") {
+        mostrarPerfiles(perfiles);
+    } else {
+        const filtrados = perfiles.filter(p => p.categoria === filtro);
+        mostrarPerfiles(filtrados);
+    }
+}
+
+function abrirModal(nombre, descripcion) {
+    document.getElementById("modalNombre").innerText = nombre;
+    document.getElementById("modalInfo").innerText = descripcion;
+    document.getElementById("modal").style.display = "flex";
+}
+
+function cerrarModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+mostrarPerfiles(perfiles);
+</script>
+
+</body>
+</html>
