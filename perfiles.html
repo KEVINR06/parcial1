@@ -3,124 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfiles Profesionales</title>
+<title>Perfiles - Mediación Cultural</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(135deg, #1f1c2c, #928dab);
-        color: white;
-    }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    color: white;
+}
 
-    header {
-        text-align: center;
-        padding: 40px;
-    }
+header {
+    text-align: center;
+    padding: 40px;
+}
 
-    header h1 {
-        font-size: 3rem;
-        margin-bottom: 10px;
-    }
+header h1 {
+    font-size: 2.5rem;
+}
 
-    .filter-container {
-        text-align: center;
-        margin-bottom: 30px;
-    }
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 40px;
+}
 
-    select {
-        padding: 10px;
-        border-radius: 10px;
-        border: none;
-        font-size: 1rem;
-    }
+.card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: transform 0.4s, box-shadow 0.4s;
+    cursor: pointer;
+}
 
-    .container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-        padding: 40px;
-    }
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.5);
+}
 
-    .card {
-        background: rgba(255,255,255,0.1);
-        border-radius: 20px;
-        padding: 20px;
-        text-align: center;
-        backdrop-filter: blur(10px);
-        transition: transform 0.4s, box-shadow 0.4s;
-        cursor: pointer;
-    }
+.card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    margin-bottom: 15px;
+}
 
-    .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0px 10px 25px rgba(0,0,0,0.5);
-    }
+.card h2 {
+    margin: 10px 0 5px;
+}
 
-    .card img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 4px solid white;
-        margin-bottom: 15px;
-    }
+.card p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
 
-    .card h2 {
-        margin: 10px 0 5px;
-    }
+/* Modal */
 
-    .card p {
-        font-size: 0.9rem;
-        opacity: 0.9;
-    }
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
 
-    /* Modal */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.7);
-        justify-content: center;
-        align-items: center;
-    }
+.modal-content {
+    background: white;
+    color: black;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+}
 
-    .modal-content {
-        background: white;
-        color: black;
-        padding: 30px;
-        border-radius: 15px;
-        width: 90%;
-        max-width: 400px;
-        text-align: center;
-    }
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 22px;
+    cursor: pointer;
+    color: red;
+}
 
-    .close {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        color: red;
-    }
+/* Botón video */
+
+.btn-video {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: linear-gradient(45deg, #ff0000, #cc0000);
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-video:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
 </style>
 </head>
+
 <body>
 
 <header>
-    <h1>Perfiles Profesionales</h1>
-    <p>Conoce nuestro equipo de expertos</p>
+    <h1>Perfiles de Mediación Cultural</h1>
+    <p>Saberes que conectan generaciones</p>
 </header>
-
-<div class="filter-container">
-    <select id="filter" onchange="filtrarPerfiles()">
-        <option value="todos">Todos</option>
-        <option value="Moda">Moda</option>
-        <option value="Agricultura">Agricultura</option>
-        <option value="Cocina">Cocina</option>
-    </select>
-</div>
 
 <div class="container" id="profileContainer"></div>
 
@@ -130,39 +132,29 @@
         <span class="close" onclick="cerrarModal()">&times;</span>
         <h2 id="modalNombre"></h2>
         <p id="modalInfo"></p>
+        <div id="modalBoton"></div>
     </div>
 </div>
 
 <script>
+
 const perfiles = [
-    {
-        nombre: "Nidia Martínez",
-        ocupacion: "Costurera",
-        categoria: "Moda",
-        descripcion: "Mijitos, les quiero enseñar  enseñar por qué las prendas de antes no se descosían nunca. La máquina corre, pero la mano es la que sabe dónde la tela necesita un respiro. Ingresa al Link para aprender: https://youtu.be/TC5_Bjc13Bk?si=SE0fQGYtya2kCSES",
-        imagen: "https://randomuser.me/api/portraits/women/44.jpg"
-    },
-    {
-        nombre: "Carlos Gómez",
-        ocupacion: "Docente de Matemáticas",
-        categoria: "educacion",
-        descripcion: "Experto en metodologías activas y enseñanza STEM.",
-        imagen: "https://randomuser.me/api/portraits/men/32.jpg"
-    },
-    {
-        nombre: "Ana Rodríguez",
-        ocupacion: "Médica General",
-        categoria: "salud",
-        descripcion: "Profesional con experiencia en atención primaria y prevención.",
-        imagen: "https://randomuser.me/api/portraits/women/68.jpg"
-    },
-    {
-        nombre: "Daniel Torres",
-        ocupacion: "Desarrollador Frontend",
-        categoria: "tecnologia",
-        descripcion: "Especialista en React, UX/UI y aplicaciones interactivas.",
-        imagen: "https://randomuser.me/api/portraits/men/75.jpg"
-    }
+{
+    nombre: "Nidia Martínez",
+    ocupacion: "Costurera",
+    categoria: "Moda",
+    descripcion: "Mijitos, les quiero enseñar por qué las prendas de antes no se descosían nunca. La máquina corre, pero la mano es la que sabe dónde la tela necesita un respiro.",
+    video: "https://youtu.be/TC5_Bjc13Bk?si=SE0fQGYtya2kCSES",
+    imagen: "https://randomuser.me/api/portraits/women/95.jpg"
+},
+{
+    nombre: "José Ramírez",
+    ocupacion: "Carpintero Tradicional",
+    categoria: "Artesanía",
+    descripcion: "La madera habla si uno aprende a escucharla. Cada corte tiene intención y memoria.",
+    video: "https://youtu.be/dQw4w9WgXcQ",
+    imagen: "https://randomuser.me/api/portraits/men/94.jpg"
+}
 ];
 
 function mostrarPerfiles(lista) {
@@ -171,7 +163,7 @@ function mostrarPerfiles(lista) {
 
     lista.forEach(perfil => {
         container.innerHTML += `
-            <div class="card" onclick="abrirModal('${perfil.nombre}', '${perfil.descripcion}')">
+            <div class="card" onclick="abrirModal('${perfil.nombre}', '${perfil.descripcion}', '${perfil.video}')">
                 <img src="${perfil.imagen}" alt="${perfil.nombre}">
                 <h2>${perfil.nombre}</h2>
                 <p>${perfil.ocupacion}</p>
@@ -180,19 +172,20 @@ function mostrarPerfiles(lista) {
     });
 }
 
-function filtrarPerfiles() {
-    const filtro = document.getElementById("filter").value;
-    if (filtro === "todos") {
-        mostrarPerfiles(perfiles);
-    } else {
-        const filtrados = perfiles.filter(p => p.categoria === filtro);
-        mostrarPerfiles(filtrados);
-    }
-}
-
-function abrirModal(nombre, descripcion) {
+function abrirModal(nombre, descripcion, video) {
     document.getElementById("modalNombre").innerText = nombre;
     document.getElementById("modalInfo").innerText = descripcion;
+
+    if(video){
+        document.getElementById("modalBoton").innerHTML = `
+            <a href="${video}" target="_blank" class="btn-video">
+                Ver Video
+            </a>
+        `;
+    } else {
+        document.getElementById("modalBoton").innerHTML = "";
+    }
+
     document.getElementById("modal").style.display = "flex";
 }
 
@@ -201,6 +194,7 @@ function cerrarModal() {
 }
 
 mostrarPerfiles(perfiles);
+
 </script>
 
 </body>
